@@ -9,12 +9,17 @@ interface LayoutProps {
 export const Layout = ({ children, className }: LayoutProps) => {
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 md:p-8 font-sans relative overflow-hidden">
-      {/* Ambient Background Elements */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
-        <div className="absolute -top-[10%] -left-[10%] w-[50%] h-[50%] bg-primary/5 rounded-full blur-3xl" />
-        <div className="absolute top-[20%] right-[5%] w-[30%] h-[30%] bg-secondary/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-[10%] left-[20%] w-[40%] h-[40%] bg-accent/20 rounded-full blur-3xl" />
-      </div>
+      {/* Ambient Background Elements - Optimized for Mobile */}
+      <div 
+        className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0"
+        style={{
+          background: `
+            radial-gradient(circle at 0% 0%, hsl(var(--primary) / 0.08) 0%, transparent 50%),
+            radial-gradient(circle at 100% 30%, hsl(var(--secondary) / 0.1) 0%, transparent 40%),
+            radial-gradient(circle at 20% 90%, hsl(var(--accent) / 0.15) 0%, transparent 50%)
+          `
+        }}
+      />
 
       <main className={cn(
         "w-full max-w-md z-10 relative",
@@ -33,8 +38,8 @@ export const Layout = ({ children, className }: LayoutProps) => {
 
 export const Card = ({ children, className }: { children: React.ReactNode; className?: string }) => (
   <div className={cn(
-    "bg-card/80 backdrop-blur-sm border border-white/20 shadow-xl rounded-3xl p-8 md:p-10",
-    "transform transition-all duration-300 hover:shadow-2xl hover:scale-[1.01]",
+    "bg-card/90 border border-white/20 shadow-xl rounded-3xl p-8 md:p-10",
+    "transform transition-all duration-300 hover:shadow-2xl",
     className
   )}>
     {children}
