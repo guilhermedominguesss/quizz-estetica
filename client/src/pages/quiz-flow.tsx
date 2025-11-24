@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -49,15 +49,13 @@ const QUESTIONS = [
 // --- Page Components ---
 
 const CaptureStep = () => {
-  const setStep = useQuizStore((s) => s.setStep);
-  const setUserData = useQuizStore((s) => s.setUserData);
+  const startNewLead = useQuizStore((s) => s.startNewLead);
   const { register, handleSubmit, formState: { errors } } = useForm<z.infer<typeof captureSchema>>({
     resolver: zodResolver(captureSchema)
   });
 
   const onSubmit = (data: z.infer<typeof captureSchema>) => {
-    setUserData(data);
-    setStep('quiz');
+    startNewLead(data);
   };
 
   return (
@@ -104,9 +102,16 @@ const CaptureStep = () => {
 };
 
 const QuizStep = () => {
-  const { currentQuestionIndex, nextQuestion, setAnswer, setStep, userData } = useQuizStore();
+  const { currentQuestionIndex, nextQuestion, setAnswer, completeQuizForCurrentLead, userData, updateCurrentLeadStatus } = useQuizStore();
   const [animating, setAnimating] = useState(false);
   const { toast } = useToast();
+
+  // Update status to 'quiz_in_progress' if not already
+  useEffect(() => {
+    if (currentQuestionIndex === 0) {
+      updateCurrentLeadStatus('quiz_in_progress');
+    }
+  }, []);
 
   // Handle the last special step (WhatsApp confirmation) separately or as index 5
   const isLastStep = currentQuestionIndex === QUESTIONS.length;
@@ -126,7 +131,7 @@ const QuizStep = () => {
   };
 
   // Final step logic
-  const [finalWhatsapp, setFinalWhatsapp] = useState(userData.whatsapp || ''); // Use userData.whatsapp here
+  const [finalWhatsapp, setFinalWhatsapp] = useState(userData.whatsapp || '');
   const [consent, setConsent] = useState(false);
 
   const handleFinalSubmit = (e: React.FormEvent) => {
@@ -135,9 +140,11 @@ const QuizStep = () => {
       toast({ title: "Erro", description: "Você precisa concordar para continuar.", variant: "destructive" });
       return;
     }
-    setAnswer('finalWhatsapp', finalWhatsapp);
-    setAnswer('consent', consent);
-    setStep('radar');
+    
+    completeQuizForCurrentLead({
+      finalWhatsapp,
+      consent
+    });
   };
 
   if (isLastStep) {
@@ -223,6 +230,12 @@ const QuizStep = () => {
 };
 
 const RadarStep = () => {
+  const updateCurrentLeadStatus = useQuizStore(s => s.updateCurrentLeadStatus);
+  
+  useEffect(() => {
+    updateCurrentLeadStatus('radar_viewed');
+  }, []);
+
   return (
     <Card className="border-primary/10 bg-white/90 backdrop-blur-md">
       <RadarAnimation />
@@ -231,9 +244,10 @@ const RadarStep = () => {
 };
 
 const LPStep = () => {
-  const { answers } = useQuizStore();
+  const updateCurrentLeadStatus = useQuizStore(s => s.updateCurrentLeadStatus);
   
   const handleWhatsappClick = () => {
+    updateCurrentLeadStatus('clicked_whatsapp');
     window.open('https://wa.me/5511999999999?text=Olá! Acabei de finalizar minha análise e quero entender como crescimento pode acontecer no meu negócio.', '_blank');
   };
 
