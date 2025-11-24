@@ -1,0 +1,278 @@
+Quero que você crie um projeto completo contendo:
+
+#️⃣ ESTRUTURA GERAL DO PROJETO
+
+Um fluxo com 3 telas sequenciais:
+
+Tela 1: Quizz (captação inicial)
+
+Tela 2: Radar de Crescimento (gerado automaticamente conforme respostas)
+
+Tela 3: LP de Chamada para WhatsApp (copy persuasiva + CTA)
+
+Todo o design deve seguir um estilo:
+Elegante, premium, minimalista, sofisticado e extremamente bonito, alinhado com profissionais da área da beleza.
+
+Identidade visual obrigatória:
+
+#9D6135
+
+#232326
+
+#CDA580
+
+#F8F7F2
+
+Layout utilizando:
+
+bordas arredondadas
+
+cards sofisticados
+
+espaçamento confortável
+
+tipografia forte e elegante
+
+degradês sutis em tons terrosos e dourados
+
+ícones minimalistas
+
+Criar também uma área interna restrita (dashboard) acessível somente por mim para acompanhar:
+
+taxa de resposta por pergunta
+
+taxa de abandono por etapa
+
+porcentagem que chega ao radar
+
+porcentagem que clica para ir à LP
+
+porcentagem que clica no botão de WhatsApp
+
+mapa de calor de interação nas telas
+
+dados individuais de cada resposta (nome, telefone, respostas do quizz)
+
+Todo tracking deve ser integrado automaticamente.
+
+SEÇÃO 0 — Captura Inicial (antes das perguntas)
+
+Criar uma seção premium com 3 campos obrigatórios:
+
+Nome completo (input)
+
+Nome do negócio / empresa (input)
+
+WhatsApp (input com máscara + validação + país BR)
+
+Texto acima:
+“Antes de começarmos sua análise, preencha seus dados para enviarmos tudo automaticamente.”
+
+Botão: “Iniciar minha análise”
+
+Ao clicar → inicia as perguntas.
+
+#️⃣ TELA 1 — QUIZZ (captação)
+Criar um quizz elegante, dividido em cards grandes, com avançar automático.
+
+Pergunta 1:
+“Qual é seu nicho?”
+Opções:
+
+Clínica de estética
+
+Lash designer
+
+Designer de sobrancelhas
+
+Massoterapeuta
+
+Outro profissional da beleza
+
+Pergunta 2:
+“Quantas clientes você atende por semana, em média?”
+Opções:
+
+0 a 5
+
+6 a 10
+
+11 a 20
+
+21 a 40
+
+Mais de 40
+
+Pergunta 3:
+“Hoje, como você consegue a maioria das suas clientes?”
+Opções:
+
+Indicação
+
+Instagram
+
+Tráfego pago
+
+WhatsApp
+
+Promoções e boca a boca
+
+Pergunta 4:
+“Qual é sua maior dificuldade atualmente?”
+Opções:
+
+Conseguir mais clientes
+
+Manter a agenda cheia
+
+Fazer clientes retornarem
+
+Vender procedimentos de maior valor
+
+Profissionalização do negócio
+
+Pergunta 5:
+“Quanto você gostaria de faturar por mês, consistentemente?”
+Opções:
+
+R$ 2.000 a R$ 5.000
+
+R$ 5.000 a R$ 10.000
+
+R$ 10.000 a R$ 20.000
+
+Acima de R$ 20.000
+
+Pergunta 6 (final):
+“Quer que a análise seja enviada para qual WhatsApp?”
+Campo: número + validação
+Checkbox obrigatório:
+“Concordo em receber minha análise e orientações pelo WhatsApp.”
+
+Ao finalizar, automaticamente direcionar para a tela 2 (Radar de Crescimento), carregando dados personalizados.
+
+#️⃣ TELA 2 — RADAR DE CRESCIMENTO
+Título elegante:
+“Sua análise inicial está pronta.”
+
+Subtitulo curto:
+“Com base nas suas respostas e em milhares de profissionais avaliadas, identificamos os três pontos centrais que determinam seu crescimento.”
+
+Criar 3 barras horizontais animadas, em estilo dashboard premium:
+
+🔶 1. Potencial de Crescimento (sempre acima de 70%)
+
+Texto abaixo:
+“Seu potencial é ALTO. Você já tem a base — só precisa ajustar seus pontos estratégicos para acelerar.”
+
+Barra animada de 70% a 95%.
+
+🔶 2. Captação Atual (gerar nível conforme o que a pessoa respondeu)
+
+Se respondeu “Indicação”, colocar entre 20% e 40%.
+Se respondeu “Instagram”, 30% a 60%.
+Se respondeu “Tráfego pago”, 40% a 70%.
+Se respondeu “WhatsApp”, 20% a 50%.
+Se respondeu “Promoções”, 10% a 30%.
+
+Texto abaixo:
+“Seu nível de captação está abaixo do potencial. Com pequenos ajustes, seus resultados podem multiplicar.”
+
+🔶 3. Eficiência Comercial (pontuação média)
+
+Gerar entre 30% e 60% conforme respostas de dificuldade.
+Se a dificuldade for “vender”, pontuar mais baixo.
+
+Texto abaixo:
+“Grande parte do lucro está escapando no processo comercial. E isso é exatamente o que resolvemos para você.”
+
+CTA principal após as barras:
+
+Um botão grande, premium, dourado:
+“Ver meus pontos de crescimento →”
+
+Esse botão leva à Tela 3 (LP de Chamada).
+
+#️⃣ TELA 3 — LP DE CHAMADA (pós-radar)
+Design premium, espaçamento confortável, estética minimalista.
+
+Título:
+
+“Seu negócio já tem potencial. O que falta são os movimentos certos.”
+
+Subtítulo:
+
+Depois da sua análise, conseguimos identificar os pontos silenciosos que travam seu crescimento — e também as oportunidades mais rápidas para aumentar sua agenda e seu faturamento.
+
+Sessão de 3 Colunas Premium (como solicitado)
+🔸 Demanda
+
+“Quão procurada você realmente é?”
+Barra indicando o nível conforme quizz.
+
+🔸 Conversão
+
+“Você transforma interesse em faturamento?”
+Barra indicando eficiência comercial.
+
+🔸 Recompra
+
+“Clientes voltam? Indicariam você?”
+Barra calculada com base nas respostas.
+
+Chamada de Valor
+
+“Estamos prontos para te mostrar exatamente onde você está perdendo clientes, dinheiro e crescimento.”
+
+CTA Final (botão WhatsApp)
+
+“Falar com a equipe agora”
+
+Ao clicar: abrir WhatsApp com mensagem automática:
+“Olá! Acabei de finalizar minha análise e quero entender como crescimento pode acontecer no meu negócio.”
+
+#️⃣ TRACKING (obrigatório)
+Incluir tracking completo:
+
+Evento por pergunta respondida
+
+Evento por abandono em cada pergunta
+
+Evento ao finalizar o quizz
+
+Evento ao entrar no radar
+
+Evento ao clicar na LP
+
+Evento ao clicar no WhatsApp
+
+Dashboard privado com relatório diário
+
+Registro individual por lead
+
+#️⃣ ÁREA RESTRITA PARA MIM
+Criar página acessível somente via login com:
+
+Dashboard
+
+Percentuais
+
+Acompanhamento de cada lead
+
+Exportação CSV
+
+Função para visualizar caminho completo do lead
+
+Função para reenviar análise manualmente
+
+Filtros por data e fonte
+
+#️⃣ COMPORTAMENTO ADICIONAL
+
+Todas as animações devem ser suaves e elegantes.
+
+O radar só aparece após 1,2 segundos (efeito “carregando análise”).
+
+As barras carregam com animação crescente.
+
+Transições suaves entre as telas.
