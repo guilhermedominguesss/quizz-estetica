@@ -6,7 +6,7 @@ import { useQuizStore } from '@/lib/quiz-store';
 import { Layout, Card, Button, Input } from '@/components/ui/layout';
 import { RadarAnimation } from '@/components/radar-animation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, Check, ChevronRight, MessageCircle, ShieldCheck, Lock } from 'lucide-react';
+import { ArrowRight, Check, ChevronRight, MessageCircle, ShieldCheck, Lock, RotateCcw } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 
@@ -245,6 +245,7 @@ const RadarStep = () => {
 
 const LPStep = () => {
   const updateCurrentLeadStatus = useQuizStore(s => s.updateCurrentLeadStatus);
+  const reset = useQuizStore(s => s.reset);
   
   const handleWhatsappClick = () => {
     updateCurrentLeadStatus('clicked_whatsapp');
@@ -299,6 +300,14 @@ const LPStep = () => {
            *Vagas limitadas para análise gratuita
          </p>
       </div>
+
+      <button 
+        onClick={() => reset()}
+        className="w-full py-4 text-xs text-muted-foreground hover:text-primary transition-colors flex items-center justify-center gap-2"
+      >
+        <RotateCcw className="w-3 h-3" />
+        Refazer análise (Modo de Teste)
+      </button>
     </div>
   );
 };
