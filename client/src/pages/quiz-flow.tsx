@@ -316,7 +316,7 @@ const LPStep = () => {
   
   const handleWhatsappClick = () => {
     updateCurrentLeadStatus('clicked_whatsapp');
-    window.open('https://wa.me/5511999999999?text=Olá! Acabei de finalizar minha análise e quero entender como crescimento pode acontecer no meu negócio.', '_blank');
+    window.open('https://wa.me/41984804266?text=Olá! Acabei de finalizar minha análise e quero entender como crescimento pode acontecer no meu negócio.', '_blank');
   };
 
   return (
