@@ -22,26 +22,29 @@ const QUESTIONS = [
   {
     id: 'niche',
     question: 'Qual é seu nicho?',
-    options: ['Clínica de estética', 'Lash designer', 'Designer de sobrancelhas', 'Massoterapeuta', 'Outro profissional da beleza']
+    microcopy: 'Vamos começar — isso leva menos de 60 segundos.',
+    options: ['Clínica de estética', 'Lash designer', 'Designer de sobrancelhas', 'Massoterapeuta', 'Outro (qual?)']
   },
   {
     id: 'weeklyClients',
-    question: 'Quantas clientes você atende por semana, em média?',
-    options: ['0 a 5', '6 a 10', '11 a 20', '21 a 40', 'Mais de 40']
+    question: 'Quantas clientes você atende hoje, antes de implementar estratégias profissionais?',
+    options: ['0 a 5', '6 a 10', '11 a 20', '21 a 40', '41 a 60', 'Mais de 60']
   },
   {
     id: 'acquisitionChannel',
     question: 'Hoje, como você consegue a maioria das suas clientes?',
-    options: ['Indicação', 'Instagram', 'Tráfego pago', 'WhatsApp', 'Promoções e boca a boca']
+    microcopy: '(Selecione a principal fonte)',
+    options: ['Indicação orgânica (boca a boca)', 'Instagram', 'Tráfego pago', 'Google / Pesquisa no Maps', 'WhatsApp']
   },
   {
     id: 'mainDifficulty',
-    question: 'Qual é sua maior dificuldade atualmente?',
+    question: 'O que mais impede você de crescer hoje?',
     options: ['Conseguir mais clientes', 'Manter a agenda cheia', 'Fazer clientes retornarem', 'Vender procedimentos de maior valor', 'Profissionalização do negócio']
   },
   {
     id: 'revenueGoal',
-    question: 'Quanto você gostaria de faturar por mês, consistentemente?',
+    question: 'Onde você quer chegar? Escolha seu faturamento ideal mensal.',
+    microcopy: '(Escolha a faixa que representa sua meta atual)',
     options: ['R$ 2.000 a R$ 5.000', 'R$ 5.000 a R$ 10.000', 'R$ 10.000 a R$ 20.000', 'Acima de R$ 20.000']
   }
 ];
@@ -65,8 +68,8 @@ const CaptureStep = () => {
           <Lock className="w-5 h-5 text-primary" />
         </div>
         <h1 className="text-3xl font-serif font-bold text-primary">Análise de Negócio</h1>
-        <p className="text-muted-foreground text-sm">
-          Antes de começarmos sua análise, preencha seus dados para enviarmos tudo automaticamente.
+        <p className="text-muted-foreground text-sm max-w-xs mx-auto">
+          Vamos gerar sua análise completa e revelar onde você pode aumentar agendamentos rapidamente.
         </p>
       </div>
 
@@ -84,13 +87,13 @@ const CaptureStep = () => {
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm font-medium ml-1">WhatsApp</label>
-          <Input {...register('whatsapp')} placeholder="(00) 00000-0000" type="tel" className={errors.whatsapp ? "border-destructive" : ""} />
+          <label className="text-sm font-medium ml-1">Seu WhatsApp principal (com DDD)</label>
+          <Input {...register('whatsapp')} placeholder="(00) 90000-0000" type="tel" className={errors.whatsapp ? "border-destructive" : ""} />
           {errors.whatsapp && <span className="text-xs text-destructive ml-1">{errors.whatsapp.message}</span>}
         </div>
 
         <Button type="submit" className="w-full mt-4">
-          Iniciar minha análise <ArrowRight className="w-4 h-4" />
+          Gerar minha análise agora <ArrowRight className="w-4 h-4" />
         </Button>
         
         <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground/60 mt-4">
@@ -104,6 +107,8 @@ const CaptureStep = () => {
 const QuizStep = () => {
   const { currentQuestionIndex, nextQuestion, setAnswer, completeQuizForCurrentLead, userData, updateCurrentLeadStatus } = useQuizStore();
   const [animating, setAnimating] = useState(false);
+  const [customInput, setCustomInput] = useState('');
+  const [showCustomInput, setShowCustomInput] = useState(false);
   const { toast } = useToast();
 
   // Update status to 'quiz_in_progress' if not already
@@ -113,11 +118,23 @@ const QuizStep = () => {
     }
   }, []);
 
+  // Reset custom input state when question changes
+  useEffect(() => {
+    setShowCustomInput(false);
+    setCustomInput('');
+  }, [currentQuestionIndex]);
+
   // Handle the last special step (WhatsApp confirmation) separately or as index 5
   const isLastStep = currentQuestionIndex === QUESTIONS.length;
 
   const handleOptionSelect = async (option: string) => {
     if (animating) return;
+
+    if (option === 'Outro (qual?)') {
+      setShowCustomInput(true);
+      return;
+    }
+
     setAnimating(true);
     
     const currentQ = QUESTIONS[currentQuestionIndex];
@@ -130,6 +147,19 @@ const QuizStep = () => {
     nextQuestion();
   };
 
+  const handleCustomInputSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!customInput.trim()) return;
+
+    setAnimating(true);
+    const currentQ = QUESTIONS[currentQuestionIndex];
+    setAnswer(currentQ.id as any, customInput);
+    
+    await new Promise(r => setTimeout(r, 400));
+    setAnimating(false);
+    nextQuestion();
+  };
+
   // Final step logic
   const [finalWhatsapp, setFinalWhatsapp] = useState(userData.whatsapp || '');
   const [consent, setConsent] = useState(false);
@@ -137,7 +167,7 @@ const QuizStep = () => {
   const handleFinalSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!consent) {
-      toast({ title: "Erro", description: "Você precisa concordar para continuar.", variant: "destructive" });
+      toast({ title: "Erro", description: "Você precisa autorizar para continuar.", variant: "destructive" });
       return;
     }
     
@@ -153,14 +183,14 @@ const QuizStep = () => {
         <div className="space-y-6">
           <div className="space-y-2">
             <h2 className="text-2xl font-serif font-bold text-primary">Último passo</h2>
-            <p className="text-muted-foreground">Quer que a análise seja enviada para qual WhatsApp?</p>
+            <p className="text-muted-foreground">Informe seu WhatsApp para liberar sua análise personalizada agora.</p>
           </div>
 
           <form onSubmit={handleFinalSubmit} className="space-y-6">
             <Input 
               value={finalWhatsapp} 
               onChange={(e) => setFinalWhatsapp(e.target.value)}
-              placeholder="(00) 00000-0000"
+              placeholder="(00) 90000-0000"
             />
             
             <label className="flex items-start gap-3 p-4 bg-background/50 rounded-xl border border-border/50 cursor-pointer hover:bg-background/80 transition-colors">
@@ -171,12 +201,15 @@ const QuizStep = () => {
                 className="mt-1 w-4 h-4 accent-primary"
               />
               <span className="text-sm text-muted-foreground">
-                Concordo em receber minha análise e orientações estratégicas pelo WhatsApp.
+                Autorizo o envio da minha análise personalizada e orientações estratégicas pelo WhatsApp.
               </span>
             </label>
 
-            <Button type="submit" disabled={!consent}>
-              Gerar meu Radar de Crescimento
+            <Button type="submit" disabled={!consent} className="flex-col h-auto py-4">
+              <span className="flex items-center gap-2">
+                Gerar meu radar de crescimento <ChevronRight className="w-4 h-4" />
+              </span>
+              <span className="text-[10px] font-normal opacity-80">(leva menos de 5 segundos)</span>
             </Button>
           </form>
         </div>
@@ -207,21 +240,40 @@ const QuizStep = () => {
           transition={{ duration: 0.3 }}
         >
           <Card>
+            {question.microcopy && (
+              <p className="text-xs text-primary font-medium mb-2 uppercase tracking-wide">{question.microcopy}</p>
+            )}
             <h2 className="text-2xl font-serif font-bold text-primary mb-8 leading-snug">
               {question.question}
             </h2>
-            <div className="space-y-3">
-              {question.options.map((option, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => handleOptionSelect(option)}
-                  className="w-full text-left p-5 rounded-xl border border-border/60 hover:border-primary/50 hover:bg-primary/5 transition-all duration-200 group flex items-center justify-between"
-                >
-                  <span className="font-medium text-foreground/80 group-hover:text-primary transition-colors">{option}</span>
-                  <ChevronRight className="w-4 h-4 text-muted-foreground/30 group-hover:text-primary opacity-0 group-hover:opacity-100 transition-all transform group-hover:translate-x-1" />
-                </button>
-              ))}
-            </div>
+            
+            {showCustomInput ? (
+              <form onSubmit={handleCustomInputSubmit} className="space-y-4 animate-in fade-in slide-in-from-bottom-2">
+                <Input 
+                  autoFocus
+                  placeholder="Digite seu nicho..." 
+                  value={customInput}
+                  onChange={(e) => setCustomInput(e.target.value)}
+                />
+                <div className="flex gap-2">
+                  <Button type="button" variant="outline" onClick={() => setShowCustomInput(false)}>Voltar</Button>
+                  <Button type="submit">Confirmar</Button>
+                </div>
+              </form>
+            ) : (
+              <div className="space-y-3">
+                {question.options.map((option, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => handleOptionSelect(option)}
+                    className="w-full text-left p-5 rounded-xl border border-border/60 hover:border-primary/50 hover:bg-primary/5 transition-all duration-200 group flex items-center justify-between"
+                  >
+                    <span className="font-medium text-foreground/80 group-hover:text-primary transition-colors">{option}</span>
+                    <ChevronRight className="w-4 h-4 text-muted-foreground/30 group-hover:text-primary opacity-0 group-hover:opacity-100 transition-all transform group-hover:translate-x-1" />
+                  </button>
+                ))}
+              </div>
+            )}
           </Card>
         </motion.div>
       </AnimatePresence>
@@ -256,14 +308,13 @@ const LPStep = () => {
     <div className="space-y-6 animate-in fade-in duration-700 pb-20">
       <div className="text-center space-y-4 mb-8">
         <span className="inline-block px-3 py-1 bg-[#9D6135]/10 text-[#9D6135] text-xs font-bold rounded-full uppercase tracking-wider mb-2">
-          Análise Concluída
+          Diagnóstico Final
         </span>
         <h1 className="text-3xl md:text-4xl font-serif font-bold text-[#232326] leading-tight">
-          Seu negócio já tem potencial. <br/>
-          <span className="text-[#9D6135]">O que falta são os movimentos certos.</span>
+          Seu diagnóstico final:
         </h1>
         <p className="text-muted-foreground text-sm md:text-base max-w-xs mx-auto leading-relaxed">
-          Identificamos os pontos silenciosos que travam seu crescimento — e também as oportunidades mais rápidas para aumentar sua agenda e faturamento.
+          Você não precisa de mais seguidores. Você precisa dos ajustes certos — e é isso que vamos te mostrar agora.
         </p>
       </div>
 
@@ -289,12 +340,12 @@ const LPStep = () => {
          <div className="absolute top-0 left-0 w-full h-full opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
          
          <h3 className="text-xl font-serif relative z-10">
-           Estamos prontos para te mostrar exatamente onde você está perdendo clientes.
+           Pronta para descobrir onde exatamente você está perdendo clientes e dinheiro todos os dias?
          </h3>
          
          <Button className="w-full bg-[#25D366] hover:bg-[#128C7E] text-white border-none shadow-lg shadow-[#25D366]/20 relative z-10 group-hover:scale-105 transition-transform">
            <MessageCircle className="w-5 h-5 mr-2" />
-           Falar com a equipe agora
+           Quero corrigir meus pontos fracos agora
          </Button>
          <p className="text-[10px] text-white/40 relative z-10">
            *Vagas limitadas para análise gratuita

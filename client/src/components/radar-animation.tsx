@@ -19,11 +19,12 @@ export const RadarAnimation = () => {
   // Logic to determine percentages based on answers
   const getAcquisitionScore = () => {
     const channel = answers.acquisitionChannel;
-    if (channel === 'Indicação') return 35;
+    if (channel === 'Indicação orgânica (boca a boca)') return 25;
     if (channel === 'Instagram') return 55;
     if (channel === 'Tráfego pago') return 65;
+    if (channel === 'Google / Pesquisa no Maps') return 60;
     if (channel === 'WhatsApp') return 45;
-    return 25; // Promoções/Boca a boca
+    return 35; 
   };
 
   const getEfficiencyScore = () => {
@@ -43,7 +44,7 @@ export const RadarAnimation = () => {
     return (
       <div className="flex flex-col items-center justify-center py-20">
         <div className="w-16 h-16 border-4 border-primary/20 border-t-primary rounded-full animate-spin mb-6" />
-        <p className="text-lg text-muted-foreground font-serif animate-pulse">Analisando suas respostas...</p>
+        <p className="text-lg text-muted-foreground font-serif animate-pulse">Calculando seu potencial real...</p>
       </div>
     );
   }
@@ -51,9 +52,9 @@ export const RadarAnimation = () => {
   return (
     <div className="space-y-8 animate-in fade-in duration-700">
       <div className="text-center space-y-2 mb-8">
-        <h2 className="text-3xl font-serif text-primary font-bold">Sua análise está pronta.</h2>
+        <h2 className="text-3xl font-serif text-primary font-bold">Seu Radar de Crescimento está pronto.</h2>
         <p className="text-muted-foreground text-sm leading-relaxed max-w-xs mx-auto">
-          Com base nas suas respostas e em milhares de profissionais avaliadas, identificamos 3 pilares.
+          Com base nas suas respostas e em milhares de profissionais avaliadas, identificamos os três pontos centrais que determinam seu crescimento.
         </p>
       </div>
 
@@ -92,7 +93,7 @@ export const RadarAnimation = () => {
             />
           </div>
           <p className="text-xs text-muted-foreground leading-relaxed">
-            Seu nível de captação está abaixo do potencial. Com pequenos ajustes, seus resultados podem multiplicar.
+            Sua captação atual está muito abaixo do potencial. Com pequenos ajustes, você pode multiplicar seus agendamentos em poucas semanas.
           </p>
         </div>
 
@@ -121,7 +122,7 @@ export const RadarAnimation = () => {
           onClick={() => setStep('lp')}
           className="bg-[#CDA580] hover:bg-[#C0956E] text-[#232326] shadow-xl hover:shadow-2xl transform transition-all hover:-translate-y-1"
         >
-          Ver meus pontos de crescimento <ArrowRight className="w-4 h-4 ml-1" />
+          Mostrar pontos que travam meu crescimento <ArrowRight className="w-4 h-4 ml-1" />
         </Button>
       </div>
     </div>
