@@ -1,4 +1,4 @@
 {
-  "buildCommand": "cp package.vercel.json package.json && npm install && vite build",
+  "buildCommand": "npm install && vite build --config vite.config.vercel.ts",
   "outputDirectory": "dist/public"
 }
