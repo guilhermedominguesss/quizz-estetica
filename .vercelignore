@@ -1,0 +1,5 @@
+server/
+shared/
+.git/
+node_modules/
+dist/
