@@ -12,8 +12,9 @@ export interface UserData {
 
 export interface QuizAnswers {
   niche: string;
-  weeklyClients: string;
-  acquisitionChannel: string;
+  currentDemand: string;      // Was weeklyClients
+  onlinePresence: string;     // Was acquisitionChannel
+  paidTrafficExperience: string; // New
   mainDifficulty: string;
   revenueGoal: string;
   finalWhatsapp: string;

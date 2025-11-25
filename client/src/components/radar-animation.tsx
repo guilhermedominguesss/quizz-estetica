@@ -12,30 +12,48 @@ export const RadarAnimation = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowResults(true);
-    }, 1200); // 1.2s "loading" delay
+    }, 1500); // Increased slightly for effect
     return () => clearTimeout(timer);
   }, []);
 
   // Logic to determine percentages based on answers
   const getAcquisitionScore = () => {
-    const channel = answers.acquisitionChannel;
-    if (channel === 'Indicação orgânica (boca a boca)') return 25;
-    if (channel === 'Instagram') return 55;
-    if (channel === 'Tráfego pago') return 65;
-    if (channel === 'Google / Pesquisa no Maps') return 60;
-    if (channel === 'WhatsApp') return 45;
-    return 35; 
+    let score = 30; // Base score
+
+    // Online Presence Impact
+    const presence = answers.onlinePresence;
+    if (presence?.includes('Forte')) score += 30;
+    else if (presence?.includes('Boa')) score += 20;
+    else if (presence?.includes('Mediana')) score += 10;
+    
+    // Paid Traffic Impact
+    const traffic = answers.paidTrafficExperience;
+    if (traffic?.includes('agência')) score += 25;
+    else if (traffic?.includes('anúncios simples')) score += 15;
+    else if (traffic?.includes('impulsionei')) score += 10;
+
+    return Math.min(score, 92); // Cap at 92
   };
 
   const getEfficiencyScore = () => {
+    let score = 40;
+
+    // Demand Impact
+    const demand = answers.currentDemand;
+    if (demand?.includes('Muito alta')) score += 30;
+    else if (demand?.includes('Alta')) score += 20;
+    else if (demand?.includes('Média')) score += 10;
+
+    // Difficulty Penalty
     const difficulty = answers.mainDifficulty;
-    if (difficulty === 'Vender procedimentos de maior valor') return 40;
-    if (difficulty === 'Conseguir mais clientes') return 50;
-    return 60;
+    if (difficulty === 'Vender procedimentos de maior valor') score -= 10;
+    if (difficulty === 'Profissionalização do negócio') score -= 5;
+
+    return Math.min(Math.max(score, 30), 85);
   };
 
   const scores = {
-    growth: 88, // Always high
+    growth: 94, // High potential always
     acquisition: getAcquisitionScore(),
     efficiency: getEfficiencyScore(),
   };
@@ -81,7 +99,7 @@ export const RadarAnimation = () => {
         {/* 2. Captação */}
         <div className="space-y-3">
           <div className="flex justify-between text-sm font-semibold text-foreground/80">
-            <span>Captação Atual</span>
+            <span>Captação & Presença Digital</span>
             <span className="text-[#B08D55]">{scores.acquisition}%</span>
           </div>
           <div className="h-3 bg-secondary/20 rounded-full overflow-hidden">
@@ -93,7 +111,9 @@ export const RadarAnimation = () => {
             />
           </div>
           <p className="text-xs text-muted-foreground leading-relaxed">
-            Sua captação atual está muito abaixo do potencial. Com pequenos ajustes, você pode multiplicar seus agendamentos em poucas semanas.
+            {scores.acquisition < 50 
+              ? "Sua presença digital ainda não reflete a qualidade do seu trabalho. Com ajustes certos, sua atração de clientes pode triplicar."
+              : "Você tem uma base digital, mas ainda não extrai o máximo dela. É possível automatizar e escalar ainda mais."}
           </p>
         </div>
 

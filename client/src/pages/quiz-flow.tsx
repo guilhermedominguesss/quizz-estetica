@@ -21,31 +21,39 @@ const captureSchema = z.object({
 const QUESTIONS = [
   {
     id: 'niche',
-    question: 'Qual é seu nicho?',
-    microcopy: 'Vamos começar — isso leva menos de 60 segundos.',
-    options: ['Clínica de estética', 'Lash designer', 'Designer de sobrancelhas', 'Massoterapeuta', 'Outro (qual?)']
+    question: 'Qual é o seu segmento?',
+    microcopy: 'Vamos começar — isso ajuda a personalizar sua análise.',
+    options: ['Massoterapeuta', 'Biomédica', 'Estética Facial', 'Estética Corporal', 'Outra área da beleza']
   },
   {
-    id: 'weeklyClients',
-    question: 'Quantas clientes você atende hoje, antes de implementar estratégias profissionais?',
-    options: ['0 a 5', '6 a 10', '11 a 20', '21 a 40', '41 a 60', 'Mais de 60']
+    id: 'currentDemand',
+    question: 'Como está hoje sua demanda?',
+    microcopy: 'Seja sincera, isso é fundamental para o diagnóstico.',
+    options: ['Baixa (poucos clientes)', 'Média (inconstante)', 'Alta (agenda razoável)', 'Muito alta (agenda cheia)']
   },
   {
-    id: 'acquisitionChannel',
-    question: 'Hoje, como você consegue a maioria das suas clientes?',
-    microcopy: '(Selecione a principal fonte)',
-    options: ['Indicação orgânica (boca a boca)', 'Instagram', 'Tráfego pago', 'Google / Pesquisa no Maps', 'WhatsApp']
+    id: 'onlinePresence',
+    question: 'Como descreve sua presença online?',
+    microcopy: 'Avalie sua constância e estratégia atual.',
+    options: ['Fraca — não tenho consistência', 'Mediana — às vezes posto', 'Boa — tenho frequência básica', 'Forte — estratégia bem definida']
+  },
+  {
+    id: 'paidTrafficExperience',
+    question: 'Já investiu em tráfego pago?',
+    microcopy: 'Não se preocupe, isso não afeta negativamente sua nota.',
+    options: ['Nunca investi', 'Já impulsionei posts', 'Já fiz anúncios simples', 'Já investi com agência/freelancer']
   },
   {
     id: 'mainDifficulty',
-    question: 'O que mais impede você de crescer hoje?',
+    question: 'Qual é sua maior dificuldade atualmente?',
+    microcopy: 'Identificar o gargalo é o primeiro passo para resolvê-lo.',
     options: ['Conseguir mais clientes', 'Manter a agenda cheia', 'Fazer clientes retornarem', 'Vender procedimentos de maior valor', 'Profissionalização do negócio']
   },
   {
     id: 'revenueGoal',
-    question: 'Onde você quer chegar? Escolha seu faturamento ideal mensal.',
-    microcopy: '(Escolha a faixa que representa sua meta atual)',
-    options: ['R$ 2.000 a R$ 5.000', 'R$ 5.000 a R$ 10.000', 'R$ 10.000 a R$ 20.000', 'Acima de R$ 20.000']
+    question: 'Quanto você gostaria de faturar por mês, consistentemente?',
+    microcopy: 'Sua ambição define a velocidade do seu crescimento.',
+    options: ['R$ 5.000 a R$ 10.000', 'R$ 10.000 a R$ 20.000', 'R$ 20.000 a R$ 40.000', 'Acima de R$ 40.000']
   }
 ];
 
@@ -130,7 +138,7 @@ const QuizStep = () => {
   const handleOptionSelect = async (option: string) => {
     if (animating) return;
 
-    if (option === 'Outro (qual?)') {
+    if (option === 'Outra área da beleza' || option === 'Outro (qual?)') {
       setShowCustomInput(true);
       return;
     }
@@ -222,12 +230,19 @@ const QuizStep = () => {
   return (
     <div className="w-full max-w-md mx-auto">
       <div className="mb-8 flex justify-between items-center px-2">
-        <span className="text-xs font-medium text-primary/60 tracking-widest uppercase">Pergunta {currentQuestionIndex + 1} de {QUESTIONS.length + 1}</span>
-        <div className="w-24 h-1 bg-secondary/20 rounded-full overflow-hidden">
-          <div 
-            className="h-full bg-primary transition-all duration-500" 
-            style={{ width: `${((currentQuestionIndex + 1) / (QUESTIONS.length + 1)) * 100}%` }} 
-          />
+        <div className="flex flex-col w-full gap-1">
+          <div className="flex justify-between text-xs font-medium text-primary/60 tracking-widest uppercase">
+             <span>Pergunta {currentQuestionIndex + 1}</span>
+             <span>{QUESTIONS.length} Total</span>
+          </div>
+          <div className="w-full h-1.5 bg-secondary/20 rounded-full overflow-hidden">
+            <motion.div 
+              className="h-full bg-primary" 
+              initial={{ width: `${((currentQuestionIndex) / QUESTIONS.length) * 100}%` }}
+              animate={{ width: `${((currentQuestionIndex + 1) / QUESTIONS.length) * 100}%` }}
+              transition={{ duration: 0.5 }}
+            />
+          </div>
         </div>
       </div>
 
@@ -241,7 +256,7 @@ const QuizStep = () => {
         >
           <Card>
             {question.microcopy && (
-              <p className="text-xs text-primary font-medium mb-2 uppercase tracking-wide">{question.microcopy}</p>
+              <p className="text-xs text-primary font-medium mb-2 uppercase tracking-wide opacity-80">{question.microcopy}</p>
             )}
             <h2 className="text-2xl font-serif font-bold text-primary mb-8 leading-snug">
               {question.question}
@@ -251,7 +266,7 @@ const QuizStep = () => {
               <form onSubmit={handleCustomInputSubmit} className="space-y-4 animate-in fade-in slide-in-from-bottom-2">
                 <Input 
                   autoFocus
-                  placeholder="Digite seu nicho..." 
+                  placeholder="Digite seu segmento..." 
                   value={customInput}
                   onChange={(e) => setCustomInput(e.target.value)}
                 />
@@ -266,7 +281,7 @@ const QuizStep = () => {
                   <button
                     key={idx}
                     onClick={() => handleOptionSelect(option)}
-                    className="w-full text-left p-5 rounded-xl border border-border/60 hover:border-primary/50 hover:bg-primary/5 transition-all duration-200 group flex items-center justify-between"
+                    className="w-full text-left p-5 rounded-xl border border-border/60 hover:border-primary/50 hover:bg-primary/5 transition-all duration-200 group flex items-center justify-between active:scale-[0.98]"
                   >
                     <span className="font-medium text-foreground/80 group-hover:text-primary transition-colors">{option}</span>
                     <ChevronRight className="w-4 h-4 text-muted-foreground/30 group-hover:text-primary opacity-0 group-hover:opacity-100 transition-all transform group-hover:translate-x-1" />
