@@ -3,3 +3,6 @@ shared/
 .git/
 node_modules/
 dist/
+*.log
+.env
+.vite
