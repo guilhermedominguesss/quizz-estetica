@@ -45,10 +45,41 @@ export class MemStorage implements IStorage {
     };
     this.leads.set(id, lead);
     
-    // TODO: Integrar com Google Sheets aqui
-    console.log("New lead created:", lead);
+    // Send to Google Sheets
+    this.sendToGoogleSheets(lead).catch(err => {
+      console.error("Failed to send lead to Google Sheets:", err);
+    });
     
     return lead;
+  }
+
+  private async sendToGoogleSheets(lead: Lead): Promise<void> {
+    const googleSheetUrl = "https://script.google.com/macros/s/AKfycbz7xjnHCay_3LBi3NcG6rFobm2XrbrrDRPYgtAhz1SPTtxsEbtrGOi-R38bZxw-3xH1sw/exec";
+    
+    const payload = {
+      name: lead.name,
+      businessName: lead.businessName,
+      whatsapp: lead.whatsapp,
+      niche: lead.niche || "",
+      currentDemand: lead.currentDemand || "",
+      onlinePresence: lead.onlinePresence || "",
+      paidTrafficExperience: lead.paidTrafficExperience || "",
+      mainDifficulty: lead.mainDifficulty || "",
+      revenueGoal: lead.revenueGoal || "",
+      radarScore: lead.radarScore || 0,
+      createdAt: lead.createdAt,
+    };
+
+    const response = await fetch(googleSheetUrl, {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    console.log("Lead sent to Google Sheets:", lead.name);
   }
 
   async getAllLeads(): Promise<Lead[]> {
