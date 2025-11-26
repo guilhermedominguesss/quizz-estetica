@@ -54,7 +54,7 @@ export class MemStorage implements IStorage {
   }
 
   private async sendToGoogleSheets(lead: Lead): Promise<void> {
-    const googleSheetUrl = "https://script.google.com/macros/s/AKfycbz7xjnHCay_3LBi3NcG6rFobm2XrbrrDRPYgtAhz1SPTtxsEbtrGOi-R38bZxw-3xH1sw/exec";
+    const googleSheetUrl = "https://script.google.com/macros/s/1IQRJDoHs6tQ8PgwRsDNAaCh-xIU0zWLOsk2XnQXsT-WTX6hl16ilFNiS/exec";
     
     const payload = {
       name: lead.name,
@@ -70,16 +70,20 @@ export class MemStorage implements IStorage {
       createdAt: lead.createdAt,
     };
 
-    const response = await fetch(googleSheetUrl, {
-      method: "POST",
-      mode: "no-cors",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    });
+    try {
+      const response = await fetch(googleSheetUrl, {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
 
-    console.log("Lead sent to Google Sheets:", lead.name);
+      console.log("Lead sent to Google Sheets:", lead.name);
+    } catch (error) {
+      console.error("Error sending to Google Sheets:", error);
+    }
   }
 
   async getAllLeads(): Promise<Lead[]> {
