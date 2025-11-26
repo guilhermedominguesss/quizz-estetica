@@ -12,12 +12,12 @@ export default defineConfig({
       "@assets": path.resolve(__dirname, "attached_assets"),
     },
   },
-  root: ".",
+  root: path.resolve(__dirname),
   build: {
-    outDir: "dist",
+    outDir: path.resolve(__dirname, "dist"),
     emptyOutDir: true,
     rollupOptions: {
-      input: "index.html",
+      input: path.resolve(__dirname, "index.html"),
     },
   },
 });
