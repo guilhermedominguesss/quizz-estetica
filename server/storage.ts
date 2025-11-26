@@ -54,7 +54,7 @@ export class MemStorage implements IStorage {
   }
 
   private async sendToGoogleSheets(lead: Lead): Promise<void> {
-    const googleSheetUrl = "https://script.google.com/macros/s/AKfycbwwiSmj8hliQkXGw1aTayJIOO9h6aB4Xc4vCPQgVmYnLSLl5xGI1i5vOI9JhfxtYdEUcQ/exec";
+    const googleSheetUrl = "https://script.google.com/macros/s/AKfycbyUMwe2tX3EXGagOKD6Nnp9lvxHZZUgy1Z_53lKbnI3xMG-7r1zaFskzEBeFUiMvqaTMg/exec";
     
     // Log para debug
     console.log("Enviando lead para Google Sheets:", {
